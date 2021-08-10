@@ -16,6 +16,12 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
+    //Kafka
+    implementation 'org.apache.kafka:kafka-clients:2.8.0'
+
+    //Arguments Parsing
+    implementation 'com.beust:jcommander:1.81'
+
     //Logging
     implementation 'org.slf4j:slf4j-simple:1.7.32'
 
