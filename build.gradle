@@ -8,6 +8,9 @@ repositories {
 }
 
 dependencies {
+    // Spring dependency injection
+    implementation 'org.springframework:spring-context:5.3.9'
+
     implementation 'com.google.protobuf:protobuf-java:3.7.0'
 //    implementation 'io.grpc:grpc-stub:1.0.0-pre2'
     implementation 'io.grpc:grpc-protobuf:1.0.0-pre2'

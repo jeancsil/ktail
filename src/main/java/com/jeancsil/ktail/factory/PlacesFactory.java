@@ -2,11 +2,13 @@ package com.jeancsil.ktail.factory;
 
 import com.jeancsil.protos.Place;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@Service
 public class PlacesFactory {
   public List<Place> create(List<String> fileContent) {
     final var places = new ArrayList<Place>(fileContent.size());

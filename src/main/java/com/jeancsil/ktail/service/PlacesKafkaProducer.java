@@ -1,39 +1,42 @@
 package com.jeancsil.ktail.service;
 
-import com.jeancsil.ktail.models.KafkaServer;
 import com.jeancsil.ktail.serializer.KafkaProtobufSerializer;
 import com.jeancsil.protos.Place;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.IntegerSerializer;
+import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
+@Service
+@Slf4j
 public class PlacesKafkaProducer {
-    private final KafkaProducer<Integer, Place> producer;
+  private final KafkaProducer<Integer, Place> producer;
 
-    public PlacesKafkaProducer(List<KafkaServer> servers) {
-        producer = createProducer(servers);
-    }
+  public PlacesKafkaProducer() {
+    producer = createProducer();
+  }
 
-    public KafkaProducer<Integer, Place> getProducer() {
-        return producer;
-    }
+  public KafkaProducer<Integer, Place> getProducer() {
+    return producer;
+  }
 
-    private KafkaProducer<Integer, Place> createProducer(List<KafkaServer> servers) {
-        var bootstrapServers = String.join(
-                ",",
-                Arrays.asList(servers.stream().map(KafkaServer::host).collect(Collectors.joining())));
+  //TODO thread possible exceptions -> Throw a specific exception with proper name.
+  private String getBootstrapServers() {
+    final var receivedBrokers = System.getenv("kafka.brokers");
+    log.info("Using the following Kafka brokers: " + receivedBrokers);
+    return receivedBrokers;
+  }
 
-        var props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ProducerConfig.CLIENT_ID_CONFIG, "KafkaCountryProducer");
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, IntegerSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaProtobufSerializer.class);
+  private KafkaProducer<Integer, Place> createProducer() {
+    var props = new Properties();
+    props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, getBootstrapServers());
+    props.put(ProducerConfig.CLIENT_ID_CONFIG, "KafkaCountryProducer");
+    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, IntegerSerializer.class);
+    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaProtobufSerializer.class);
 
-        return new KafkaProducer<>(props);
-    }
+    return new KafkaProducer<>(props);
+  }
 }

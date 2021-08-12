@@ -4,11 +4,13 @@ import com.jeancsil.ktail.factory.PlacesFactory;
 import com.jeancsil.ktail.util.FileReader;
 import com.jeancsil.protos.Place;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.util.List;
 
 @Slf4j
+@Service
 public record PlacesService(PlacesFactory factory) {
 
     public List<Place> getPlaces(final String fileName) {
