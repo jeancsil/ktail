@@ -6,44 +6,43 @@ import com.jeancsil.ktail.producer.PlacesKafkaProducer;
 import com.jeancsil.ktail.service.PlacesService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
-
-import java.util.concurrent.ExecutionException;
 
 @Slf4j
 public class ProducerApplication {
 
   public static void main(String[] args) {
-    log.info("Starting the application");
+    log.info("Starting the kafka producer application");
     final var container = new ContainerWrapper("com.jeancsil.ktail");
     final var arguments = Arguments.parseArguments(args);
     final var placesService = container.getBean(PlacesService.class);
     final var producer = container.getBean(PlacesKafkaProducer.class).getProducer();
+    final var topic = System.getenv("ktail.kafka.topic");
 
     placesService
         .getPlaces(arguments.getFile())
         .iterator()
         .forEachRemaining(
             place -> {
-              try {
-                final var record = new ProducerRecord<>("places", place.getGeonameId(), place);
+              final var record = new ProducerRecord<>(topic, place.getGeonameId(), place);
 
-                RecordMetadata metadata = producer.send(record).get();
+              producer.send(
+                  record,
+                  (metadata, exception) -> {
+                    if (metadata != null) {
+                      log.trace(
+                          "key: "
+                              + record.key()
+                              + " value: "
+                              + record.value()
+                              + " partition: "
+                              + metadata.partition()
+                              + " offset: "
+                              + metadata.offset());
 
-                if (log.isTraceEnabled()) {
-                  log.trace(
-                      "key: "
-                          + record.key()
-                          + " value: "
-                          + record.value()
-                          + " partition: "
-                          + metadata.partition()
-                          + " offset: "
-                          + metadata.offset());
-                }
-              } catch (InterruptedException | ExecutionException e) {
-                log.error(e.getMessage(), e);
-              }
+                    } else {
+                      log.error(exception.getMessage());
+                    }
+                  });
 
               if (log.isTraceEnabled()) {
                 log.trace("geonameId: " + place.getGeonameId() + " name: " + place.getName());

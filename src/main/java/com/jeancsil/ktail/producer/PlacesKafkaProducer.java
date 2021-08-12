@@ -25,7 +25,7 @@ public class PlacesKafkaProducer {
 
   //TODO thread possible exceptions -> Throw a specific exception with proper name.
   private String getBootstrapServers() {
-    final var receivedBrokers = System.getenv("kafka.brokers");
+    final var receivedBrokers = System.getenv("ktail.kafka.brokers");
     log.info("Using the following Kafka brokers: " + receivedBrokers);
     return receivedBrokers;
   }
