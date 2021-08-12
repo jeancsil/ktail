@@ -1,4 +1,4 @@
-package com.jeancsil.ktail.service;
+package com.jeancsil.ktail.producer;
 
 import com.jeancsil.ktail.serializer.KafkaProtobufSerializer;
 import com.jeancsil.protos.Place;

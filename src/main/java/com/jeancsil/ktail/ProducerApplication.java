@@ -2,7 +2,7 @@ package com.jeancsil.ktail;
 
 import com.jeancsil.ktail.args.Arguments;
 import com.jeancsil.ktail.di.ContainerWrapper;
-import com.jeancsil.ktail.service.PlacesKafkaProducer;
+import com.jeancsil.ktail.producer.PlacesKafkaProducer;
 import com.jeancsil.ktail.service.PlacesService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
