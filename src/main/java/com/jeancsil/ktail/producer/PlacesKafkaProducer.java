@@ -33,7 +33,7 @@ public class PlacesKafkaProducer {
   private KafkaProducer<Integer, Place> createProducer() {
     var props = new Properties();
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, getBootstrapServers());
-    props.put(ProducerConfig.CLIENT_ID_CONFIG, "KafkaCountryProducer");
+    props.put(ProducerConfig.CLIENT_ID_CONFIG, "KtailProducer");
     props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, IntegerSerializer.class);
     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaProtobufSerializer.class);
 
