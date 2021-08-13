@@ -1,7 +1,7 @@
-package com.jeancsil.ktail.service;
+package com.jeancsil.ktail.producer.service;
 
-import com.jeancsil.ktail.factory.PlacesFactory;
-import com.jeancsil.ktail.util.FileReader;
+import com.jeancsil.ktail.producer.factory.PlacesFactory;
+import com.jeancsil.ktail.producer.util.FileReader;
 import com.jeancsil.protos.Place;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

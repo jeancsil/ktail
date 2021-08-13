@@ -1,4 +1,4 @@
-package com.jeancsil.ktail.consumer.deserializer;
+package com.jeancsil.ktail.serializer;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.MessageLite;

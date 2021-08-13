@@ -1,4 +1,4 @@
-package com.jeancsil.ktail.util;
+package com.jeancsil.ktail.producer.util;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

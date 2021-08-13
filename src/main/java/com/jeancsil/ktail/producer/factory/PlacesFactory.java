@@ -1,4 +1,4 @@
-package com.jeancsil.ktail.factory;
+package com.jeancsil.ktail.producer.factory;
 
 import com.jeancsil.protos.Place;
 import lombok.extern.slf4j.Slf4j;

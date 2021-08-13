@@ -1,6 +1,6 @@
 package com.jeancsil.ktail.consumer;
 
-import com.jeancsil.ktail.consumer.deserializer.KafkaProtobufDeserializer;
+import com.jeancsil.ktail.serializer.KafkaProtobufDeserializer;
 import com.jeancsil.protos.Place;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.Consumer;

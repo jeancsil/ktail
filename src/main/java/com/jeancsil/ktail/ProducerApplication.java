@@ -2,10 +2,10 @@ package com.jeancsil.ktail;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
-import com.jeancsil.ktail.args.Arguments;
 import com.jeancsil.ktail.di.ContainerWrapper;
 import com.jeancsil.ktail.producer.PlacesKafkaProducer;
-import com.jeancsil.ktail.service.PlacesService;
+import com.jeancsil.ktail.producer.args.Arguments;
+import com.jeancsil.ktail.producer.service.PlacesService;
 import com.jeancsil.protos.Place;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -33,9 +33,7 @@ public class ProducerApplication {
 
               producer.send(
                   record,
-                  (metadata, exception) -> {
-                    logKafkaMessage(record, metadata, exception);
-                  });
+                  (metadata, exception) -> logKafkaMessage(record, metadata, exception));
             });
 
     log.info("Flushing the producer...");

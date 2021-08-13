@@ -1,4 +1,4 @@
-package com.jeancsil.ktail.args;
+package com.jeancsil.ktail.producer.args;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;

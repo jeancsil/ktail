@@ -17,7 +17,6 @@ public class ConsumerApplication {
     log.info("Starting the kafka consumer application");
     final var container = new ContainerWrapper("com.jeancsil.ktail.consumer");
     final var consumer = container.getBean(PlacesKafkaConsumer.class).getConsumer();
-    //    log.info(consumer.listTopics().toString());
 
     final int giveUp = 100;
     int noRecordsCount = 0;
@@ -29,8 +28,11 @@ public class ConsumerApplication {
       if (consumerRecords.count() == 0) {
         log.info("No records...");
         noRecordsCount++;
-        if (noRecordsCount > giveUp) break;
-        else continue;
+        if (noRecordsCount > giveUp) {
+          break;
+        } else {
+          continue;
+        }
       }
 
       consumerRecords.forEach(
