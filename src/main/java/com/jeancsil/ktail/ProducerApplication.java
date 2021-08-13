@@ -1,11 +1,17 @@
 package com.jeancsil.ktail;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.util.JsonFormat;
 import com.jeancsil.ktail.args.Arguments;
 import com.jeancsil.ktail.di.ContainerWrapper;
 import com.jeancsil.ktail.producer.PlacesKafkaProducer;
 import com.jeancsil.ktail.service.PlacesService;
+import com.jeancsil.protos.Place;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
+
+import java.time.Duration;
 
 @Slf4j
 public class ProducerApplication {
@@ -28,29 +34,28 @@ public class ProducerApplication {
               producer.send(
                   record,
                   (metadata, exception) -> {
-                    if (metadata != null) {
-                      log.trace(
-                          "key: "
-                              + record.key()
-                              + " value: "
-                              + record.value()
-                              + " partition: "
-                              + metadata.partition()
-                              + " offset: "
-                              + metadata.offset());
-
-                    } else {
-                      log.error(exception.getMessage());
-                    }
+                    logKafkaMessage(record, metadata, exception);
                   });
-
-              if (log.isTraceEnabled()) {
-                log.trace("geonameId: " + place.getGeonameId() + " name: " + place.getName());
-              }
             });
 
+    log.info("Flushing the producer...");
     producer.flush();
-    producer.close();
-    log.info("Stopping the application");
+    log.info("Closing the producer (wait for 5 minutes)...");
+    producer.close(Duration.ofMinutes(5));
+    log.info("Stopping the application...");
+  }
+
+  // TODO extract this to a class and reuse in the consumer
+  private static void logKafkaMessage(
+      ProducerRecord<Integer, Place> record, RecordMetadata metadata, Exception exception) {
+    if (metadata != null) {
+      try {
+        log.info(JsonFormat.printer().print(record.value()));
+      } catch (InvalidProtocolBufferException e) {
+        log.error("Impossible to print the message: " + e.getMessage());
+      }
+    } else {
+      log.error(exception.getMessage());
+    }
   }
 }
